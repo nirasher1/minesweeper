@@ -158,11 +158,13 @@ export default class Board {
         let boardDiv = document.createElement("div");
         boardDiv.id = "minesweeper-board";
 
-        boardDiv.appendChild(document.createElement("table"));
+        const tableElement = document.createElement("table");
+        boardDiv.appendChild(tableElement);
         for (let rowIndex = 0; rowIndex < this.rowsCount; rowIndex++) {
-            boardDiv.appendChild(document.createElement("tr"));
+            let currentRowElement = document.createElement("tr");
+            tableElement.appendChild(currentRowElement);
             for (let columnIndex = 0; columnIndex < this.columnsCount; columnIndex++) {
-                boardDiv.appendChild(this.matrix[rowIndex][columnIndex].render());
+                currentRowElement.appendChild(this.matrix[rowIndex][columnIndex].render());
             }
         }
 
