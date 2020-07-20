@@ -1,0 +1,137 @@
+html {
+    height: 100%
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+}
+
+td {
+    border: 1px solid rgb(150, 150, 150);
+    width: 40px;
+    height: 40px;
+    background-color: rgb(189, 189, 189);
+    text-align: center;
+    vertical-align: middle;
+    font: 20px "Segoe UI Black";
+    font-weight: bolder;
+}
+
+#configuration-page {
+    width: 100%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#game-options {
+    width: 80%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.game-option {
+    border: solid 1px black;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: space-around;
+    height: 200px;
+    width: 200px;
+    background-color: rgb(189, 189, 189);
+    box-shadow: inset 9px 9px 1px -6px rgba(245, 245, 245, 0.7), inset -1px -1px 1px 2px rgba(125,124,128,1);
+}
+
+.game-option div {
+    display: flex;
+    flex-direction: column;
+    color: white;
+}
+
+.game-option.selected {
+    border: solid 5px #00214b;
+}
+
+input {
+    width: 7ch;
+    text-align: center;
+    background-color: inherit;
+    color: white;
+    border: none;
+    border-bottom: 2px solid white;
+}
+
+.exposed {
+
+}
+
+img {
+    max-width: 60%;
+    max-height: 60%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+td.not-exposed {
+    box-shadow: inset 9px 9px 1px -6px rgba(245, 245, 245, 0.7), inset -1px -1px 1px 2px rgba(125,124,128,1);
+}
+
+.bombed {
+    background-color: red;
+}
+
+.badge-one {
+    color: rgb(5, 5, 253);
+}
+
+.badge-two {
+    color: rgb(17, 129, 17);
+}
+
+.badge-three {
+    color: rgb(252, 6, 6);
+}
+
+.badge-four {
+    color: rgb(0, 0, 123);
+}
+
+.badge-five {
+    color: rgb(137, 1, 1);
+}
+
+.badge-six {
+    color: rgb(0, 127, 128);
+}
+
+.badge-seven {
+    color: rgb(0, 0, 0);
+}
+
+.badge-eight {
+    color: rgb(127, 127, 127);
+}
+
+.green div {
+    background-color: #67aa2a;
+}
+
+.yellow div {
+    background-color: #d1ac0c;
+}
+
+.orange div {
+    background-color: #d86230;
+}
+
+.purple div {
+    background-color: #a74395;
+}
