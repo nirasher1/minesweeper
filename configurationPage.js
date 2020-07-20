@@ -6,7 +6,8 @@ const onOptionClick = (configurationPage, e, gameOption) => {
     const currentSelectedOption = configurationPage.selectedOption;
 
     if (currentSelectedOption === null) {
-        configurationPage._startButtonElement.addEventListener("click", () => configurationPage.onStartGameClick(gameOption))
+        configurationPage._startButtonElement.addEventListener("click",
+            () => configurationPage.onStartGameClick(configurationPage))
     }
     if (currentSelectedOption !== null) {
         currentSelectedOption.unmarkAsSelectedOption();
@@ -17,7 +18,15 @@ const onOptionClick = (configurationPage, e, gameOption) => {
 };
 
 export default class ConfigurationPage {
-    constructor({builtinOptions, minCustomRowsCount, maxCustomRowsCount, minCustomColumnsCount, maxCustomColumnsCount, minCustomMinesCount, customOptionClassList, onStartGameClick}) {
+    constructor({
+                    builtinOptions,
+                    minCustomRowsCount,
+                    maxCustomRowsCount,
+                    minCustomColumnsCount,
+                    maxCustomColumnsCount,
+                    minCustomMinesCount,
+                    customOptionClassList,
+                    onStartGameClick}) {
         this.builtinOptions = builtinOptions;
         this.customOption = {
             minCustomRowsCount,
@@ -50,7 +59,8 @@ export default class ConfigurationPage {
             this.gameOptions.push(gameOption);
             gameOptionsDiv.appendChild(gameOption.render());
         }
-        const customGameOption = new CustomGameOption(this.customOption, (e, gameOption) => onOptionClick(this, e, gameOption));
+        const customGameOption = new CustomGameOption(this.customOption,
+            (e, gameOption) => onOptionClick(this, e, gameOption));
         gameOptionsDiv.appendChild(customGameOption.render());
 
         this._startButtonElement.innerText = "START GAME";

@@ -47,22 +47,15 @@ const builtinOptions = [
     }
 ];
 
-const startGame = (selectedOption) => {
-    // Todo: when you have really long statements you should separate the statement into multiple lines
-    /* example:
+const startGame = (configurationPage) => {
+    const selectedOption = configurationPage.selectedOption;
     if (selectedOption.rowsCount !== null
         && selectedOption.columnsCount !== null
-        && selectedOption.minesCount !== null
-    )*/
-    if (selectedOption.rowsCount !== null && selectedOption.columnsCount !== null && selectedOption.minesCount !== null) {
-        /* example:
-            const userBoard = new Board(
-                selectedOption.rowsCount,
-                selectedOption.columnsCount,
-                selectedOption.minesCount,
-            );
-         */
-        const userBoard = new Board(selectedOption.rowsCount, selectedOption.columnsCount, selectedOption.minesCount);
+        && selectedOption.minesCount !== null) {
+        const userBoard = new Board(
+            selectedOption.rowsCount,
+            selectedOption.columnsCount,
+            selectedOption.minesCount);
         // Todo: make sure there's a configuration page rendered before trying to remove it
         document.body.removeChild(document.getElementById("configuration-page"));
         userBoard.render();
