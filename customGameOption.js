@@ -18,8 +18,11 @@ const createInput = (customGameOption, min = 0, max = 0, onInputValidUpdate) => 
             newValue = "";
         }
 
-        inputElement.value = newValue.toString();
-        onInputValidUpdate(newValue.toString());
+        let stringNewValue = newValue.toString();
+        inputElement.value = stringNewValue;
+        if (stringNewValue !== "") {
+            onInputValidUpdate(stringNewValue);
+        }
 
         const rowsCountInputValue = customGameOption._rowsCountElement.value;
         const columnsCountInputValue = customGameOption._columnsCountElement.value;
