@@ -9,7 +9,7 @@ const onOptionClick = (configurationPage, e, gameOption) => {
         configurationPage._startButtonElement.addEventListener("click",
             () => configurationPage.onStartGameClick(configurationPage))
     }
-    if (currentSelectedOption !== null) {
+    if (currentSelectedOption !== null && currentSelectedOption !== gameOption) {
         currentSelectedOption.unmarkAsSelectedOption();
     }
 
