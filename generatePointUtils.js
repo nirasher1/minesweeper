@@ -66,7 +66,8 @@ const generatePoint = (highestRowIndex, highestColumnIndex) => {
 export const getPointIndex = (generatedPoint, points) => {
     for (let index = 0; index < points.length; index++){
         let point = points[index];
-        if (point.rowIndex === generatedPoint.rowIndex && point.columnIndex === generatedPoint.columnIndex) {
+        if (point.rowIndex === generatedPoint.rowIndex
+            && point.columnIndex === generatedPoint.columnIndex) {
             return index;
         }
     }

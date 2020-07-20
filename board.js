@@ -53,7 +53,8 @@ const calcMinesSurroundingEachCell = (board) => {
     for (let rowIndex = 0; rowIndex < rowsCount; rowIndex++) {
         for (let columnIndex = 0; columnIndex < columnsCount; columnIndex++) {
             let minesAround = 0;
-            let surroundingPoints = getSurroundingPoints({ rowIndex, columnIndex }, rowsCount, columnsCount);
+            let surroundingPoints = getSurroundingPoints(
+                { rowIndex, columnIndex }, rowsCount, columnsCount);
             for (let point of surroundingPoints) {
                 if (board.matrix[point.rowIndex][point.columnIndex].isMine) {
                     minesAround++;
@@ -120,7 +121,8 @@ const onCellClick = (board, clickedPoint, isUserEvent = false) => {
 
 const locateMines = (board, clickedPoint) => {
     for (let mineIndex = 0; mineIndex < board.minesCount; mineIndex++) {
-        let newPoint = generatePointCoordinates(board.rowsCount, board.columnsCount, minesPoints, clickedPoint);
+        let newPoint = generatePointCoordinates(
+            board.rowsCount, board.columnsCount, minesPoints, clickedPoint);
         minesPoints.push(newPoint);
         board.matrix[newPoint.rowIndex][newPoint.columnIndex].isMine = true;
     }
@@ -131,7 +133,10 @@ const createMatrixStructure = (board) => {
     for (let rowIndex = 0; rowIndex < board.rowsCount; rowIndex++) {
         matrix.push([]);
         for (let columnIndex = 0; columnIndex < board.columnsCount; columnIndex++) {
-            matrix[rowIndex].push(new Cell({onClick: () => onCellClick(board, { rowIndex, columnIndex }, true)}));
+            matrix[rowIndex].push(new Cell({onClick: () => onCellClick(
+                board,
+                { rowIndex, columnIndex },
+                true)}));
         }
     }
     board.matrix = matrix;
