@@ -8,7 +8,6 @@ const createInput = (customGameOption, min = 0, max = 0, onInputValidUpdate) => 
     inputElement.step = "1";
 
     inputElement.addEventListener("blur", () => {
-        console.log("blur")
         let currentValue = parseInt(inputElement.value);
         let newValue = Math.round(currentValue);
         if (currentValue > inputElement.max) {
