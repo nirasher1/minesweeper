@@ -8,7 +8,6 @@ export default class GameOption {
         this.columnsCount = columnsCount;
         this.minesCount = minesCount;
         this.onClick = onClick;
-        this.isSelected = false;
         this._rowsCountElement = document.createTextNode(this.rowsCount);
         this._columnsCountElement = document.createTextNode(this.columnsCount);
         this._minesCountElement = document.createTextNode(this.minesCount);
@@ -18,32 +17,20 @@ export default class GameOption {
     }
 
     markAsSelectedOption() {
-        this.isSelected = true;
-        this.render();
+        this._element.classList.add(SELECTED_CLASS);
     }
 
     unmarkAsSelectedOption() {
-        this.isSelected = false;
-        this.render();
+        this._element.classList.remove(SELECTED_CLASS);
     }
 
     render() {
         this._element.classList.add("game-option");
 
-        if (this.isSelected) {
-            this._element.classList.add(SELECTED_CLASS)
-        } else {
-            this._element.classList.remove(SELECTED_CLASS)
-        }
-
         this._element.innerHTML = `
         <h2>${this.description}</h2>
-        `
-        // <div>
-        //     <span>${this.rowsCount} X ${this.columnsCount}</span>
-        //     <span>${this.minesCount} mines</span>
-        // </div>
-        // `
+        `;
+
         const fieldsElement = document.createElement("div");
 
         const rowsAndColumnsCountSpan = document.createElement("span");
