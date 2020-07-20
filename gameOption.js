@@ -9,6 +9,9 @@ export default class GameOption {
         this.minesCount = minesCount;
         this.onClick = onClick;
         this.isSelected = false;
+        this._rowsCountElement = document.createTextNode(this.rowsCount);
+        this._columnsCountElement = document.createTextNode(this.columnsCount);
+        this._minesCountElement = document.createTextNode(this.minesCount);
         this._element = document.createElement("div");
         this._element.classList.add(classList);
         this._element.addEventListener("click", (e) => this.onClick(e, this));
@@ -35,11 +38,26 @@ export default class GameOption {
 
         this._element.innerHTML = `
         <h2>${this.description}</h2>
-        <div>
-            <span>${this.rowsCount} X ${this.columnsCount}</span>
-            <span>${this.minesCount} mines</span>
-        </div>
         `
+        // <div>
+        //     <span>${this.rowsCount} X ${this.columnsCount}</span>
+        //     <span>${this.minesCount} mines</span>
+        // </div>
+        // `
+        const fieldsElement = document.createElement("div");
+
+        const rowsAndColumnsCountSpan = document.createElement("span");
+        rowsAndColumnsCountSpan.appendChild(this._rowsCountElement);
+        rowsAndColumnsCountSpan.appendChild(document.createTextNode(" X "));
+        rowsAndColumnsCountSpan.appendChild(this._columnsCountElement);
+
+        const minesCountSPan = document.createElement("span");
+        minesCountSPan.appendChild(this._minesCountElement);
+        minesCountSPan.appendChild(document.createTextNode(" mines"));
+
+        fieldsElement.appendChild(rowsAndColumnsCountSpan);
+        fieldsElement.appendChild(minesCountSPan);
+        this._element.append(fieldsElement);
 
         return this._element;
     }
