@@ -1,16 +1,14 @@
 html {
-    height: 100%;
     font-family: "Segoe UI Black";
+    height: 100%;
 }
 
 body {
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
-    height: 100%;
-    padding-top: 2%;
-    padding-bottom: 5%;
+    justify-content: space-around;
+    align-items: center;
+    min-height: 80%;
 }
 
 table {
@@ -29,8 +27,8 @@ td {
 }
 
 #configuration-page {
+    flex-grow: 4;
     width: 100%;
-    height: 80%;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -39,6 +37,7 @@ td {
 
 #game-options {
     width: 80%;
+    height: 100%;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
