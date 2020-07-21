@@ -1,8 +1,6 @@
 import Board from './board/board.js'
 import ConfigurationPage from "./configurationPage/configurationPage.js"
 
-// Todo: general note: Organizing your files into folders can really help
-
 // const ROW_CELLS_COUNT = 9;
 // const COLUMN_CELLS_COUNT = 9;
 // const MINES_COUNT = 10;
