@@ -167,3 +167,8 @@ td.not-exposed {
     border: solid;
     white-space: pre-line;
 }
+
+.message-modal-buttons {
+    display: flex;
+    justify-content: space-around;
+}

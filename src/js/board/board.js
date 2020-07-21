@@ -12,14 +12,16 @@ import MessageModal from "../messageModal/messageModal.js"
 let minesPoints = [];
 let cleanPointsToExpose = [];
 
-// Todo: In this situation it could be very helpful to have a util function that iterates over the matrix and calls a callback function
-// i.e: iterateMatrix(board.matrix, (cell) => { return cell.foo })
-const removeAllBoardListeners = (board) => {
+const iterateMatrix = (board, callback) => {
     for (let rowIndex = 0; rowIndex < board.rowsCount; rowIndex++) {
         for (let columnIndex = 0; columnIndex < board.columnsCount; columnIndex++) {
-            board.matrix[rowIndex][columnIndex].removeAllListeners();
+            callback(board.matrix[rowIndex][columnIndex])
         }
     }
+};
+
+const removeAllBoardListeners = (board) => {
+    iterateMatrix(board, cell => cell.removeAllListeners());
 };
 
 // Todo: rename to something like expose all mines
@@ -88,8 +90,11 @@ const exposeSurroundingCells = (board, clickedCell, clickedCellPoint) => {
 const finishGameAsWin = board => {
     board.isWinDetected = true;
     removeAllBoardListeners(board);
-    new MessageModal("win", [{
-        title: "START A NEW GAME",
+    new MessageModal(
+        "win",
+        true,
+        [{
+        title: "NEW GAME",
         onClick: () => location.reload()
     }]).render();
 };
@@ -98,8 +103,11 @@ const finishGameAsLose = (board, clickedCell) => {
     clickedCell.markAsBombed();
     bombAllHidingMines(board);
     removeAllBoardListeners(board);
-    new MessageModal("lose", [{
-        title: "START A NEW GAME",
+    new MessageModal(
+        "lose",
+        true,
+        [{
+        title: "NEW GAME",
         onClick: () => location.reload()
     }]).render();
 };
