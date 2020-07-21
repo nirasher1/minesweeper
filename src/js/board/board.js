@@ -23,7 +23,6 @@ const removeAllBoardListeners = (board) => {
 
 // Todo: rename to something like expose all mines
 const bombAllHidingMines = (board) => {
-    // Todo: inline forEach is better performance wise
     minesPoints.forEach(point => {
         const currentPoint = board.matrix[point.rowIndex][point.columnIndex];
         if (!currentPoint.isExposed && currentPoint.userMark === USER_MARK.NONE) {
