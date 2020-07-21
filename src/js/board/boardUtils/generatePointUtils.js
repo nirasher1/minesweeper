@@ -43,11 +43,11 @@ export const getSurroundingPoints = (centerPoint, rowsCount, columnsCount) => {
     const existingPoints = [];
 
     const pointsToCheck = possibleSurroundingPoints(centerPoint);
-    for (let point of pointsToCheck) {
+    pointsToCheck.forEach(point => {
         if (isPointExist(point, rowsCount, columnsCount)) {
             existingPoints.push(point)
         }
-    }
+    });
 
     return existingPoints;
 };

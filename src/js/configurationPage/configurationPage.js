@@ -54,11 +54,11 @@ export default class ConfigurationPage {
         gameOptionsDiv.id = "game-options";
 
 
-        for (let option of this.builtinOptions) {
+        this.builtinOptions.forEach(option => {
             const gameOption = new GameOption(option, (e, gameOption) => onOptionClick(this, e, gameOption));
             this.gameOptions.push(gameOption);
             gameOptionsDiv.appendChild(gameOption.render());
-        }
+        });
         const customGameOption = new CustomGameOption(this.customOption,
             (e, gameOption) => onOptionClick(this, e, gameOption));
         gameOptionsDiv.appendChild(customGameOption.render());

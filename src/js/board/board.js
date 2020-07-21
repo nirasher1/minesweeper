@@ -1,5 +1,8 @@
-// Todo: long imports are usually broken into multiple lines as well
-import { generateDistinctPoint as generatePointCoordinates, getPointIndex, getSurroundingPoints } from "./boardUtils/generatePointUtils.js";
+import {
+    generateDistinctPoint as generatePointCoordinates,
+    getPointIndex,
+    getSurroundingPoints
+} from "./boardUtils/generatePointUtils.js";
 import Cell from "./cell.js"
 import USER_MARK from "./boardUtils/userMark.js";
 
@@ -21,13 +24,13 @@ const removeAllBoardListeners = (board) => {
 // Todo: rename to something like expose all mines
 const bombAllHidingMines = (board) => {
     // Todo: inline forEach is better performance wise
-    for (let point of minesPoints) {
+    minesPoints.forEach(point => {
         const currentPoint = board.matrix[point.rowIndex][point.columnIndex];
         if (!currentPoint.isExposed && currentPoint.userMark === USER_MARK.NONE) {
             currentPoint.isExposed = true;
             currentPoint.render()
         }
-    }
+    });
 };
 
 // Todo: rename (not sure what you mean by clean points)
@@ -55,11 +58,11 @@ const calcMinesSurroundingEachCell = (board) => {
             let minesAround = 0;
             let surroundingPoints = getSurroundingPoints(
                 { rowIndex, columnIndex }, rowsCount, columnsCount);
-            for (let point of surroundingPoints) {
+            surroundingPoints.forEach(point => {
                 if (board.matrix[point.rowIndex][point.columnIndex].isMine) {
                     minesAround++;
                 }
-            }
+            });
             board.matrix[rowIndex][columnIndex].minesAroundCount = minesAround;
         }
     }
@@ -74,11 +77,11 @@ const firstMove = (board, clickedPoint) => {
 const exposeSurroundingCells = (board, clickedCell, clickedCellPoint) => {
     if (!clickedCell.isMine && clickedCell.minesAroundCount === 0) {
         let surroundingPoints = getSurroundingPoints(clickedCellPoint, board.rowsCount, board.columnsCount);
-        for (let point of surroundingPoints) {
+        surroundingPoints.forEach(point => {
             if (!board.matrix[point.rowIndex][point.columnIndex].isExposed) {
                 onCellClick(board, point, false);
             }
-        }
+        });
     }
 };
 

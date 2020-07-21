@@ -1,23 +1,6 @@
 import Board from './board/board.js'
 import ConfigurationPage from "./configurationPage/configurationPage.js"
 
-// const ROW_CELLS_COUNT = 9;
-// const COLUMN_CELLS_COUNT = 9;
-// const MINES_COUNT = 10;
-
-const ROW_CELLS_COUNT = 16;
-const COLUMN_CELLS_COUNT = 16;
-const MINES_COUNT = 40;
-
-// const ROW_CELLS_COUNT = 16;
-// const COLUMN_CELLS_COUNT = 30;
-// const MINES_COUNT = 99;
-
-// CUSTOM
-// columns range 9 - 30
-// rows range 9 - 24
-// mines amount range 10 - (x-1)(y-1)
-
 // Todo: Usually what we do here is get the row, column and mine count from user input
 // Todo: Also these options would usually be in a separate config file (to make the app.js as clean as possible)
 
