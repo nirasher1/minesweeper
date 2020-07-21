@@ -83,6 +83,7 @@ const exposeSurroundingCells = (board, clickedCell, clickedCellPoint) => {
 };
 
 const finishGameAsWin = board => {
+    board.isWinDetected = true;
     alert("win");
     removeAllBoardListeners(board)
 };
@@ -115,7 +116,9 @@ const onCellClick = (board, clickedPoint, isUserEvent = false) => {
         finishGameAsLose(board, clickedCell);
     }
     if (cleanPointsToExpose.length === 0) {
-        finishGameAsWin(board);
+        if (!board.isWinDetected) {
+            finishGameAsWin(board);
+        }
     }
 };
 
@@ -150,6 +153,7 @@ export default class Board {
         this.columnsCount = columnsCount;
         this.minesCount = minesCount;
         this.matrix = undefined;
+        this.isWinDetected = false;
         createMatrixStructure(this);
         console.log(this.matrix)
     }
