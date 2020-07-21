@@ -5,6 +5,7 @@ import {
 } from "./boardUtils/generatePointUtils.js";
 import Cell from "./cell.js"
 import USER_MARK from "./boardUtils/userMark.js";
+import MessageModal from "../messageModal/messageModal.js"
 
 // Todo: all of these functions and variables should be in the board class
 // Change func(board) to func.call(this) and then func() with no need of params
@@ -86,15 +87,21 @@ const exposeSurroundingCells = (board, clickedCell, clickedCellPoint) => {
 
 const finishGameAsWin = board => {
     board.isWinDetected = true;
-    alert("win");
-    removeAllBoardListeners(board)
+    removeAllBoardListeners(board);
+    new MessageModal("win", [{
+        title: "START A NEW GAME",
+        onClick: () => location.reload()
+    }]).render();
 };
 
 const finishGameAsLose = (board, clickedCell) => {
-    alert("lose");
     clickedCell.markAsBombed();
     bombAllHidingMines(board);
-    removeAllBoardListeners(board)
+    removeAllBoardListeners(board);
+    new MessageModal("lose", [{
+        title: "START A NEW GAME",
+        onClick: () => location.reload()
+    }]).render();
 };
 
 const onCellClick = (board, clickedPoint, isUserEvent = false) => {
