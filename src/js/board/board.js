@@ -1,7 +1,7 @@
 // Todo: long imports are usually broken into multiple lines as well
-import { generateDistinctPoint as generatePointCoordinates, getPointIndex, getSurroundingPoints } from "./generatePointUtils.js";
+import { generateDistinctPoint as generatePointCoordinates, getPointIndex, getSurroundingPoints } from "./boardUtils/generatePointUtils.js";
 import Cell from "./cell.js"
-import USER_MARK from "./userMark.js";
+import USER_MARK from "./boardUtils/userMark.js";
 
 // Todo: all of these functions and variables should be in the board class
 // Change func(board) to func.call(this) and then func() with no need of params

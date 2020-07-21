@@ -1,10 +1,11 @@
 import CELL_BADGE from "./cellBadge.js";
-import USER_MARK from "./userMark.js"
+import USER_MARK from "./boardUtils/userMark.js"
 
 const EXPOSED_CLASS = "exposed";
 const NOT_EXPOSED_CLASS = "not-exposed";
 const BOMBED_CLASS = "bombed";
 const MINE_BADGE_ID = "mine";
+const IMAGES_FOLDER_PATH = "src/images/";
 const MINE_ICON_NAME = "mine.png";
 
 const onContextMenu = (e, cell) => {
@@ -57,7 +58,7 @@ export default class Cell {
                     this.iconNode = document.createElement("img");
                     element.appendChild(this.iconNode)
                 }
-                this.iconNode.src = MINE_ICON_NAME;
+                this.iconNode.src = IMAGES_FOLDER_PATH + MINE_ICON_NAME;
             } else {
                 badgeId = this.minesAroundCount;
                 element.innerText = CELL_BADGE[badgeId].text;
@@ -75,7 +76,7 @@ export default class Cell {
                 if (this.iconNode === null) {
                     this.iconNode = document.createElement("img");
                 }
-                this.iconNode.src = this.userMark;
+                this.iconNode.src = IMAGES_FOLDER_PATH + this.userMark;
                 if (element.querySelector("img") === null) {
                     element.appendChild(this.iconNode)
                 }

@@ -1,5 +1,5 @@
-import Board from './board.js'
-import ConfigurationPage from "./configurationPage.js"
+import Board from './board/board.js'
+import ConfigurationPage from "./configurationPage/configurationPage.js"
 
 // Todo: general note: Organizing your files into folders can really help
 
