@@ -13,6 +13,10 @@ import ControlPanel from "./controlPanel/ControlPanel.js";
 let minesPoints = [];
 let cleanPointsToExpose = [];
 
+const startANewGame = () => {
+    location.reload();
+};
+
 const iterateMatrix = (board, callback) => {
     for (let rowIndex = 0; rowIndex < board.rowsCount; rowIndex++) {
         for (let columnIndex = 0; columnIndex < board.columnsCount; columnIndex++) {
@@ -98,7 +102,7 @@ const finishGameAsWin = board => {
         true,
         [{
         title: "NEW GAME",
-        onClick: () => location.reload()
+        onClick: startANewGame
     }]).render();
 };
 
@@ -112,7 +116,7 @@ const finishGameAsLose = (board, clickedCell) => {
         true,
         [{
         title: "NEW GAME",
-        onClick: () => location.reload()
+        onClick: startANewGame
     }]).render();
 };
 
@@ -175,7 +179,7 @@ export default class GamePage {
         this.minesCount = minesCount;
         this.matrix = undefined;
         this.isWinDetected = false;
-        this.controlPanel = new ControlPanel(this.minesCount, this.movesCount);
+        this.controlPanel = new ControlPanel(this.minesCount, this.movesCount, startANewGame);
         createMatrixStructure(this);
         console.log(this.matrix)
     }
