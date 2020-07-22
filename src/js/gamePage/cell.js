@@ -1,4 +1,4 @@
-import CELL_BADGE from "./cellBadge.js";
+import CELL_BADGE from "./boardUtils/cellBadge.js";
 import USER_MARK from "./boardUtils/userMark.js"
 
 const EXPOSED_CLASS = "exposed";

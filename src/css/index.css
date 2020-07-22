@@ -172,3 +172,13 @@ td.not-exposed {
     display: flex;
     justify-content: space-around;
 }
+
+#minesweeper-board {
+    display: flex;
+    flex-direction: column;
+}
+
+.control-panel {
+    display: flex;
+    justify-content: space-around;
+}

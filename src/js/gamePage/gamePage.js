@@ -6,9 +6,10 @@ import {
 import Cell from "./cell.js"
 import USER_MARK from "./boardUtils/userMark.js";
 import MessageModal from "../messageModal/messageModal.js"
+import ControlPanel from "./controlPanel/ControlPanel.js";
 
-// Todo: all of these functions and variables should be in the board class
-// Change func(board) to func.call(this) and then func() with no need of params
+// Todo: all of these functions and variables should be in the gamePage class
+// Change func(gamePage) to func.call(this) and then func() with no need of params
 let minesPoints = [];
 let cleanPointsToExpose = [];
 
@@ -72,6 +73,7 @@ const calcMinesSurroundingEachCell = (board) => {
 
 const firstMove = (board, clickedPoint) => {
     locateMines(board, clickedPoint);
+    board.controlPanel.watch.start();
     calcMinesSurroundingEachCell(board);
     cleanPointsToExpose = getCleanPoints(board);
 };
@@ -89,6 +91,7 @@ const exposeSurroundingCells = (board, clickedCell, clickedCellPoint) => {
 
 const finishGameAsWin = board => {
     board.isWinDetected = true;
+    board.controlPanel.watch.stop();
     removeAllBoardListeners(board);
     new MessageModal(
         "win",
@@ -100,6 +103,7 @@ const finishGameAsWin = board => {
 };
 
 const finishGameAsLose = (board, clickedCell) => {
+    board.controlPanel.watch.stop();
     clickedCell.markAsBombed();
     bombAllHidingMines(board);
     removeAllBoardListeners(board);
@@ -163,7 +167,7 @@ const createMatrixStructure = (board) => {
 };
 
 
-export default class Board {
+export default class GamePage {
     constructor(rowsCount, columnsCount, minesCount) {
         this.movesCount = 0;
         this.rowsCount = rowsCount;
@@ -171,6 +175,7 @@ export default class Board {
         this.minesCount = minesCount;
         this.matrix = undefined;
         this.isWinDetected = false;
+        this.controlPanel = new ControlPanel(this.minesCount, this.movesCount);
         createMatrixStructure(this);
         console.log(this.matrix)
     }
@@ -178,6 +183,8 @@ export default class Board {
     render() {
         let boardDiv = document.createElement("div");
         boardDiv.id = "minesweeper-board";
+
+        boardDiv.appendChild(this.controlPanel.render());
 
         const tableElement = document.createElement("table");
         boardDiv.appendChild(tableElement);

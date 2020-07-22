@@ -1,4 +1,4 @@
-import Board from './board/board.js'
+import GamePage from './gamePage/gamePage.js'
 import ConfigurationPage from "./configurationPage/configurationPage.js"
 
 // Todo: Usually what we do here is get the row, column and mine count from user input
@@ -33,7 +33,7 @@ const startGame = (configurationPage) => {
     if (selectedOption.rowsCount !== null
         && selectedOption.columnsCount !== null
         && selectedOption.minesCount !== null) {
-        const userBoard = new Board(
+        const userBoard = new GamePage(
             selectedOption.rowsCount,
             selectedOption.columnsCount,
             selectedOption.minesCount);
@@ -68,5 +68,5 @@ configurationPage.render();
 // });
 // configurationPage.render();
 
-// const userBoard = new Board(ROW_CELLS_COUNT, COLUMN_CELLS_COUNT, MINES_COUNT);
+// const userBoard = new GamePage(ROW_CELLS_COUNT, COLUMN_CELLS_COUNT, MINES_COUNT);
 // userBoard.render();
