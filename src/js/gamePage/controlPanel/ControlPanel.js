@@ -30,13 +30,13 @@ export default class ControlPanel {
         setupElements(this);
     }
 
-    increaseMinesToMarkCount() {
+    decreaseMinesToMarkCount() {
         this.minesToMarkCount--;
         this.render();
     }
 
-    decreaseMinesToMarkCount() {
-        this.minesToMarkCount--;
+    increaseMinesToMarkCount() {
+        this.minesToMarkCount++;
         this.render();
     }
 

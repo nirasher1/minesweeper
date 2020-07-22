@@ -11,9 +11,11 @@ const MINE_ICON_NAME = "mine.png";
 const onContextMenu = (e, cell) => {
     e.preventDefault();
     if (cell.userMark === USER_MARK.NONE) {
+        cell.onPutFlag();
         cell.userMark = USER_MARK.FLAG;
         cell._element.removeEventListener("click", cell.onClick);
     } else if (cell.userMark === USER_MARK.FLAG) {
+        cell.onDeleteFlag();
         cell.userMark = USER_MARK.QUESTION_MARK;
         cell._element.removeEventListener("click", cell.onClick);
     } else {
@@ -25,11 +27,20 @@ const onContextMenu = (e, cell) => {
 
 
 export default class Cell {
-    constructor({isMine = false, isExposed = false, minesAroundCount = 0, onClick = () => {}}={}) {
+    constructor({
+                    isMine = false,
+                    isExposed = false,
+                    minesAroundCount = 0,
+                    onClick = () => {},
+                    onPutFlag = () => {},
+                    onDeleteFlag = () => {}
+    }={}) {
         this.isMine = isMine;
         this.isExposed = isExposed;
         this.minesAroundCount = minesAroundCount;
         this.onClick = onClick;
+        this.onPutFlag = onPutFlag;
+        this.onDeleteFlag = onDeleteFlag;
         this.onContextMenu = (e) => onContextMenu(e, this);
         this.userMark = USER_MARK.NONE;
         this.iconNode = null;

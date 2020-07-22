@@ -157,14 +157,19 @@ const locateMines = (board, clickedPoint) => {
 };
 
 const createMatrixStructure = (board) => {
+    const controlPanel = board.controlPanel;
     const matrix = [];
     for (let rowIndex = 0; rowIndex < board.rowsCount; rowIndex++) {
         matrix.push([]);
         for (let columnIndex = 0; columnIndex < board.columnsCount; columnIndex++) {
-            matrix[rowIndex].push(new Cell({onClick: () => onCellClick(
-                board,
-                { rowIndex, columnIndex },
-                true)}));
+            matrix[rowIndex].push(new Cell({
+                onClick: () => onCellClick(
+                    board,
+                    { rowIndex, columnIndex },
+                    true),
+                onPutFlag: controlPanel.decreaseMinesToMarkCount.bind(controlPanel),
+                onDeleteFlag: controlPanel.increaseMinesToMarkCount.bind(controlPanel)
+            }));
         }
     }
     board.matrix = matrix;
