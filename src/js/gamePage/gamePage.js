@@ -30,14 +30,22 @@ const removeAllBoardListeners = (board) => {
 };
 
 // Todo: rename to something like expose all mines
-const bombAllHidingMines = (board) => {
+const exposeUnexposedMines = board => {
     minesPoints.forEach(point => {
         const currentPoint = board.matrix[point.rowIndex][point.columnIndex];
-        if (!currentPoint.isExposed && currentPoint.userMark === USER_MARK.NONE) {
+        if (!currentPoint.isExposed && currentPoint.userMark !== USER_MARK.FLAG) {
             currentPoint.isExposed = true;
             currentPoint.render()
         }
     });
+};
+
+const exposeMistakeFlags = board => {
+    iterateMatrix(board, (cell) => {
+        if (!cell.isMine && cell.userMark === USER_MARK.FLAG) {
+            cell.markAsUserMistake();
+        }
+    })
 };
 
 // Todo: rename (not sure what you mean by clean points)
@@ -110,7 +118,8 @@ const finishGameAsWin = board => {
 const finishGameAsLose = (board, clickedCell) => {
     board.controlPanel.watch.stop();
     clickedCell.markAsBombed();
-    bombAllHidingMines(board);
+    exposeUnexposedMines(board);
+    exposeMistakeFlags(board);
     removeAllBoardListeners(board);
     new MessageModal(
         "lose",

@@ -3,6 +3,7 @@ import USER_MARK from "./boardUtils/userMark.js"
 
 const EXPOSED_CLASS = "exposed";
 const NOT_EXPOSED_CLASS = "not-exposed";
+const MISTAKE_MARK = "mistake-mark";
 const BOMBED_CLASS = "bombed";
 const MINE_BADGE_ID = "mine";
 const IMAGES_FOLDER_PATH = "src/images/";
@@ -52,6 +53,13 @@ export default class Cell {
     removeAllListeners() {
         this._element.removeEventListener("click", this.onClick);
         this._element.removeEventListener("contextmenu", this.onContextMenu)
+    }
+
+    markAsUserMistake() {
+        this._element.classList.add(MISTAKE_MARK)
+        const xText = document.createElement("div");
+        xText.innerText = "X";
+        this._element.appendChild(xText)
     }
 
     markAsBombed() {

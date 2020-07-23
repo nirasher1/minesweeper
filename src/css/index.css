@@ -24,6 +24,16 @@ td {
     vertical-align: middle;
     font-size: 20px;
     font-weight: bolder;
+    position: relative;
+}
+
+.mistake-mark div {
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    transform: translate(10%, -30%);
+    font-family: "Segoe UI Light";
+    font-size: xxx-large;
 }
 
 #configuration-page {
