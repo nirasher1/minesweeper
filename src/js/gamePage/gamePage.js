@@ -89,7 +89,10 @@ const firstMove = (board, clickedPoint) => {
 
 const exposeSurroundingCells = (board, clickedCell, clickedCellPoint) => {
     if (!clickedCell.isMine && clickedCell.minesAroundCount === 0) {
-        let surroundingPoints = getSurroundingPoints(clickedCellPoint, board.rowsCount, board.columnsCount);
+        let surroundingPoints = getSurroundingPoints(
+            clickedCellPoint,
+            board.rowsCount,
+            board.columnsCount);
         surroundingPoints.forEach(point => {
             const currentCell = board.matrix[point.rowIndex][point.columnIndex];
             if (!currentCell.isExposed && currentCell.userMark === USER_MARK.NONE) {
