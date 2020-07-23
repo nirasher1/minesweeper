@@ -196,7 +196,6 @@ export default class GamePage {
         this.isWinDetected = false;
         this.controlPanel = new ControlPanel(this.minesCount, this.movesCount, startANewGame);
         createMatrixStructure(this);
-        console.log(this.matrix)
     }
 
     render() {

@@ -82,10 +82,8 @@ export const generateDistinctPoint = (rowsCount, columnsCount, points, clickedPo
     let pointsToExclude = getSurroundingPoints(clickedPoint, rowsCount, columnsCount);
     pointsToExclude.push(clickedPoint);
     pointsToExclude = pointsToExclude.concat(points);
-    console.log(pointsToExclude);
     let newPoint = generatePoint(rowsCount - 1, columnsCount - 1);
     while (isMinePointExist(newPoint, pointsToExclude)) {
-        console.log("point exists");
         newPoint = generatePoint(rowsCount - 1, columnsCount - 1);
     }
     return newPoint;
