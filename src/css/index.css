@@ -34,6 +34,7 @@ td {
     transform: translate(10%, -30%);
     font-family: "Segoe UI Light";
     font-size: xxx-large;
+    text-align: center;
 }
 
 #configuration-page {
