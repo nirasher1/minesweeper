@@ -1,7 +1,5 @@
 import Watch from "./watch.js";
 
-let _movesCount;
-
 const setupElements = controlPanel => {
     const element = controlPanel._element;
     element.classList.add("control-panel");
@@ -20,7 +18,6 @@ const setupElements = controlPanel => {
 export default class ControlPanel {
     constructor(minesToMarkCount, movesCount, startANewGame) {
         this.minesToMarkCount = minesToMarkCount;
-        _movesCount = movesCount;
         this.startANewGame = startANewGame;
         this.watch = new Watch();
         this._element = document.createElement("div");

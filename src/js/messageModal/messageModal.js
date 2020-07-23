@@ -21,12 +21,16 @@ export default class MessageModal {
 
         if (this.shouldShowOKButton || this.buttons !== null) {
             let buttonsDiv = document.createElement("div");
-            buttonsDiv.classList.add("message-modal-buttons")
+            buttonsDiv.classList.add("message-modal-buttons");
 
             if (this.shouldShowOKButton) {
                 const okButtonObject = {
                     title: "OK",
-                    onClick: () => document.body.removeChild(this._containerElement)
+                    onClick: () => {
+                        if (this._containerElement !== null) {
+                            document.body.removeChild(this._containerElement)
+                        }
+                    }
                 };
                 if (this.buttons === null) {
                     this.buttons = [okButtonObject]

@@ -26,7 +26,6 @@ const onContextMenu = (e, cell) => {
     cell.render();
 };
 
-
 export default class Cell {
     constructor({
                     isMine = false,
@@ -56,7 +55,7 @@ export default class Cell {
     }
 
     markAsUserMistake() {
-        this._element.classList.add(MISTAKE_MARK)
+        this._element.classList.add(MISTAKE_MARK);
         const xText = document.createElement("div");
         xText.innerText = "X";
         this._element.appendChild(xText)

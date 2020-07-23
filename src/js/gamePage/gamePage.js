@@ -29,11 +29,10 @@ const removeAllBoardListeners = (board) => {
     iterateMatrix(board, cell => cell.removeAllListeners());
 };
 
-// Todo: rename to something like expose all mines
 const exposeUnexposedMines = board => {
     minesPoints.forEach(point => {
         const currentPoint = board.matrix[point.rowIndex][point.columnIndex];
-        if (!currentPoint.isExposed && currentPoint.userMark !== USER_MARK.FLAG) {
+        if (!currentPoint.isExposed && currentPoint.userMark !== USER_MARK.FLAGm) {
             currentPoint.isExposed = true;
             currentPoint.render()
         }
@@ -48,8 +47,7 @@ const exposeMistakeFlags = board => {
     })
 };
 
-// Todo: rename (not sure what you mean by clean points)
-const getCleanPoints = board => {
+const getPointsWithoutMines = board => {
     const cleanPoints = [];
     for (let rowIndex = 0; rowIndex < board.rowsCount; rowIndex++) {
         for (let columnIndex = 0; columnIndex < board.columnsCount; columnIndex++) {
@@ -64,8 +62,7 @@ const getCleanPoints = board => {
     return cleanPoints
 };
 
-// Todo: can rename to countSurroundingMines or something shorter
-const calcMinesSurroundingEachCell = (board) => {
+const countSurroundingMines = (board) => {
     const rowsCount = board.rowsCount;
     const columnsCount = board.columnsCount;
     for (let rowIndex = 0; rowIndex < rowsCount; rowIndex++) {
@@ -86,13 +83,16 @@ const calcMinesSurroundingEachCell = (board) => {
 const firstMove = (board, clickedPoint) => {
     locateMines(board, clickedPoint);
     board.controlPanel.watch.start();
-    calcMinesSurroundingEachCell(board);
-    cleanPointsToExpose = getCleanPoints(board);
+    countSurroundingMines(board);
+    cleanPointsToExpose = getPointsWithoutMines(board);
 };
 
 const exposeSurroundingCells = (board, clickedCell, clickedCellPoint) => {
     if (!clickedCell.isMine && clickedCell.minesAroundCount === 0) {
-        let surroundingPoints = getSurroundingPoints(clickedCellPoint, board.rowsCount, board.columnsCount);
+        let surroundingPoints = getSurroundingPoints(
+            clickedCellPoint,
+            board.rowsCount,
+            board.columnsCount);
         surroundingPoints.forEach(point => {
             const currentCell = board.matrix[point.rowIndex][point.columnIndex];
             if (!currentCell.isExposed && currentCell.userMark === USER_MARK.NONE) {
@@ -196,7 +196,6 @@ export default class GamePage {
         this.isWinDetected = false;
         this.controlPanel = new ControlPanel(this.minesCount, this.movesCount, startANewGame);
         createMatrixStructure(this);
-        console.log(this.matrix)
     }
 
     render() {
