@@ -22,6 +22,8 @@ const createInput = (customGameOption, min = 0, max = 0, onInputValidUpdate) => 
         inputElement.value = stringNewValue;
         if (stringNewValue !== "") {
             onInputValidUpdate(stringNewValue);
+        } else {
+            onInputValidUpdate(null);
         }
 
         const rowsCountInputValue = customGameOption._rowsCountElement.value;
