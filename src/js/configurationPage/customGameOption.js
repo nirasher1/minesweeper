@@ -29,6 +29,9 @@ const createInput = (customGameOption, min = 0, max = 0, onInputValidUpdate) => 
         if (rowsCountInputValue !== "" && columnsCountInputValue !== "") {
             customGameOption._minesCountElement.max =
                 ((rowsCountInputValue - 1) * (columnsCountInputValue - 1)).toString();
+        } else {
+            customGameOption._minesCountElement.value = "";
+            customGameOption.minesCount = null;
         }
     });
 
