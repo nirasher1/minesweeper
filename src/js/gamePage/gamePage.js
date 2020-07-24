@@ -8,40 +8,9 @@ import USER_MARK from "./boardUtils/userMark.js";
 import MessageModal from "../messageModal/messageModal.js"
 import ControlPanel from "./controlPanel/ControlPanel.js";
 
-// Todo: all of these functions and variables should be in the gamePage class
-// Change func(gamePage) to func.call(this) and then func() with no need of params
-let minesPoints = [];
-let cleanPointsToExpose = [];
 
 const startANewGame = () => {
     location.reload();
-};
-
-const onCellClick = (board, clickedPoint, isUserEvent = false) => {
-    const clickedCell = board.matrix[clickedPoint.rowIndex][clickedPoint.columnIndex];
-
-    if (isUserEvent && board.movesCount === 0) {
-        board[_firstMove](clickedPoint);
-    }
-
-    clickedCell.isExposed = true;
-    if (!clickedCell.isMine) {
-        cleanPointsToExpose.splice(getPointIndex(clickedPoint, cleanPointsToExpose), 1);
-        board[_exposeSurroundingCells](clickedCell, clickedPoint);
-    }
-    if (isUserEvent) {
-        board.movesCount++;
-    }
-    clickedCell.render();
-
-    if (clickedCell.isMine) {
-        board[_finishGameAsLose](clickedCell);
-    }
-    if (cleanPointsToExpose.length === 0) {
-        if (!board.isWinDetected) {
-            board[_finishGameAsWin]();
-        }
-    }
 };
 
 const _createMatrixStructure = Symbol("createMatrixStructure");
@@ -56,28 +25,40 @@ const _exposeUnexposedMines = Symbol("exposeUnexposedMines");
 const _exposeMistakeFlags = Symbol("exposeMistakeFlags");
 const _iterateMatrix = Symbol("iterateMatrix");
 const _removeAllBoardListeners = Symbol("removeAllBoardListeners");
+const _onCellClick = Symbol("onCellClick");
+const _movesCount = Symbol("movesCount");
+const _rowsCount = Symbol("rowsCount");
+const _columnsCount = Symbol("columnsCount");
+const _minesCount = Symbol("minesCount");
+const _matrix = Symbol("matrix");
+const _isWinDetected = Symbol("isWinDetected");
+const _controlPanel = Symbol("controlPanel");
+const _minesPoints = Symbol("minesPoints");
+const _cleanPointsToExpose = Symbol("cleanPointsToExpose");
 
 export default class GamePage {
     constructor(rowsCount, columnsCount, minesCount) {
-        this.movesCount = 0;
-        this.rowsCount = rowsCount;
-        this.columnsCount = columnsCount;
-        this.minesCount = minesCount;
-        this.matrix = null;
-        this.isWinDetected = false;
-        this.controlPanel = new ControlPanel(this.minesCount, this.movesCount, startANewGame);
+        this[_movesCount] = 0;
+        this[_rowsCount] = rowsCount;
+        this[_columnsCount] = columnsCount;
+        this[_minesCount] = minesCount;
+        this[_matrix] = null;
+        this[_isWinDetected] = false;
+        this[_controlPanel] = new ControlPanel(this[_minesCount], this[_movesCount], startANewGame);
+        this[_minesPoints] = [];
+        this[_cleanPointsToExpose] = [];
+
         this[_createMatrixStructure]();
     }
 
     [_createMatrixStructure]() {
-        const controlPanel = this.controlPanel;
+        const controlPanel = this[_controlPanel];
         const matrix = [];
-        for (let rowIndex = 0; rowIndex < this.rowsCount; rowIndex++) {
+        for (let rowIndex = 0; rowIndex < this[_rowsCount]; rowIndex++) {
             matrix.push([]);
-            for (let columnIndex = 0; columnIndex < this.columnsCount; columnIndex++) {
+            for (let columnIndex = 0; columnIndex < this[_columnsCount]; columnIndex++) {
                 matrix[rowIndex].push(new Cell({
-                    onClick: () => onCellClick(
-                        this,
+                    onClick: () => this[_onCellClick](
                         { rowIndex, columnIndex },
                         true),
                     onPutFlag: controlPanel.decreaseMinesToMarkCount.bind(controlPanel),
@@ -89,24 +70,24 @@ export default class GamePage {
     };
 
     [_locateMines](clickedPoint) {
-        for (let mineIndex = 0; mineIndex < this.minesCount; mineIndex++) {
+        for (let mineIndex = 0; mineIndex < this[_minesCount]; mineIndex++) {
             let newPoint = generatePointCoordinates(
-                this.rowsCount, this.columnsCount, minesPoints, clickedPoint);
-            minesPoints.push(newPoint);
+                this[_rowsCount], this[_columnsCount], this[_minesPoints], clickedPoint);
+            this[_minesPoints].push(newPoint);
             this.matrix[newPoint.rowIndex][newPoint.columnIndex].isMine = true;
         }
     };
 
     [_firstMove](clickedPoint) {
         this[_locateMines](clickedPoint);
-        this.controlPanel.watch.start();
+        this[_controlPanel].watch.start();
         this[_calculateSurroundingMines]();
-        cleanPointsToExpose = this[_getPointsWithoutMines]();
+        this[_cleanPointsToExpose] = this[_getPointsWithoutMines]();
     };
 
     [_finishGameAsWin]() {
         this.isWinDetected = true;
-        this.controlPanel.watch.stop();
+        this[_controlPanel].watch.stop();
         this[_removeAllBoardListeners]();
         new MessageModal(
             "win",
@@ -118,7 +99,7 @@ export default class GamePage {
     };
 
     [_finishGameAsLose](clickedCell) {
-        this.controlPanel.watch.stop();
+        this[_controlPanel].watch.stop();
         clickedCell.markAsBombed();
         this[_exposeUnexposedMines]();
         this[_exposeMistakeFlags]();
@@ -136,20 +117,20 @@ export default class GamePage {
         if (!clickedCell.isMine && clickedCell.minesAroundCount === 0) {
             let surroundingPoints = getSurroundingPoints(
                 clickedCellPoint,
-                this.rowsCount,
-                this.columnsCount);
+                this[_rowsCount],
+                this[_columnsCount]);
             surroundingPoints.forEach(point => {
                 const currentCell = this.matrix[point.rowIndex][point.columnIndex];
                 if (!currentCell.isExposed && currentCell.userMark === USER_MARK.NONE) {
-                    onCellClick(this, point, false);
+                    this[_onCellClick](point, false);
                 }
             });
         }
     };
 
     [_calculateSurroundingMines]() {
-        const rowsCount = this.rowsCount;
-        const columnsCount = this.columnsCount;
+        const rowsCount = this[_rowsCount];
+        const columnsCount = this[_columnsCount];
         for (let rowIndex = 0; rowIndex < rowsCount; rowIndex++) {
             for (let columnIndex = 0; columnIndex < columnsCount; columnIndex++) {
                 let minesAround = 0;
@@ -167,8 +148,8 @@ export default class GamePage {
 
     [_getPointsWithoutMines]() {
         const cleanPoints = [];
-        for (let rowIndex = 0; rowIndex < this.rowsCount; rowIndex++) {
-            for (let columnIndex = 0; columnIndex < this.columnsCount; columnIndex++) {
+        for (let rowIndex = 0; rowIndex < this[_rowsCount]; rowIndex++) {
+            for (let columnIndex = 0; columnIndex < this[_columnsCount]; columnIndex++) {
                 if (!this.matrix[rowIndex][columnIndex].isMine) {
                     cleanPoints.push({
                         rowIndex,
@@ -181,7 +162,7 @@ export default class GamePage {
     };
 
     [_exposeUnexposedMines]() {
-        minesPoints.forEach(point => {
+        this[_minesPoints].forEach(point => {
             const currentPoint = this.matrix[point.rowIndex][point.columnIndex];
             if (!currentPoint.isExposed && currentPoint.userMark !== USER_MARK.FLAG) {
                 currentPoint.isExposed = true;
@@ -199,8 +180,8 @@ export default class GamePage {
     };
 
     [_iterateMatrix](callback) {
-        for (let rowIndex = 0; rowIndex < this.rowsCount; rowIndex++) {
-            for (let columnIndex = 0; columnIndex < this.columnsCount; columnIndex++) {
+        for (let rowIndex = 0; rowIndex < this[_rowsCount]; rowIndex++) {
+            for (let columnIndex = 0; columnIndex < this[_columnsCount]; columnIndex++) {
                 callback(this.matrix[rowIndex][columnIndex])
             }
         }
@@ -210,18 +191,45 @@ export default class GamePage {
         this[_iterateMatrix](cell => cell.removeAllListeners());
     };
 
+    [_onCellClick](clickedPoint, isUserEvent = false) {
+        const clickedCell = this.matrix[clickedPoint.rowIndex][clickedPoint.columnIndex];
+
+        if (isUserEvent && this[_movesCount] === 0) {
+            this[_firstMove](clickedPoint);
+        }
+
+        clickedCell.isExposed = true;
+        if (!clickedCell.isMine) {
+            this[_cleanPointsToExpose].splice(getPointIndex(clickedPoint, this[_cleanPointsToExpose]), 1);
+            this[_exposeSurroundingCells](clickedCell, clickedPoint);
+        }
+        if (isUserEvent) {
+            this[_movesCount]++;
+        }
+        clickedCell.render();
+
+        if (clickedCell.isMine) {
+            this[_finishGameAsLose](clickedCell);
+        }
+        if (this[_cleanPointsToExpose].length === 0) {
+            if (!this.isWinDetected) {
+                this[_finishGameAsWin]();
+            }
+        }
+    };
+
     render() {
         let boardDiv = document.createElement("div");
         boardDiv.id = "minesweeper-board";
 
-        boardDiv.appendChild(this.controlPanel.render());
+        boardDiv.appendChild(this[_controlPanel].render());
 
         const tableElement = document.createElement("table");
         boardDiv.appendChild(tableElement);
-        for (let rowIndex = 0; rowIndex < this.rowsCount; rowIndex++) {
+        for (let rowIndex = 0; rowIndex < this[_rowsCount]; rowIndex++) {
             let currentRowElement = document.createElement("tr");
             tableElement.appendChild(currentRowElement);
-            for (let columnIndex = 0; columnIndex < this.columnsCount; columnIndex++) {
+            for (let columnIndex = 0; columnIndex < this[_columnsCount]; columnIndex++) {
                 currentRowElement.appendChild(this.matrix[rowIndex][columnIndex].render());
             }
         }
