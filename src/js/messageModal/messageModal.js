@@ -1,46 +1,51 @@
 /*
     get buttons array that each element is an object - { title: "string", onClick: "callback" }
  */
+const _message = Symbol("message");
+const _buttons = Symbol("buttons");
+const _containerElement = Symbol("containerElement");
+const _shouldShowOKButton = Symbol("shouldShowOKButton");
+
 export default class MessageModal {
     constructor(message = "", shouldShowOKButton, buttons = null) {
-        this.message = message;
-        this.buttons = buttons;
-        this._containerElement = document.createElement("div");
-        this.shouldShowOKButton = shouldShowOKButton;
+        this[_message] = message;
+        this[_buttons] = buttons;
+        this[_containerElement] = document.createElement("div");
+        this[_shouldShowOKButton] = shouldShowOKButton;
     }
 
     render() {
-        this._containerElement.classList.add("message-modal-container");
+        this[_containerElement].classList.add("message-modal-container");
 
         const messageModalElement = document.createElement("div");
         messageModalElement.classList.add("message-modal");
-        this._containerElement.appendChild(messageModalElement);
+        this[_containerElement].appendChild(messageModalElement);
 
-        let messageElement = document.createTextNode(this.message);
+        let messageElement = document.createTextNode(this[_message]);
         messageModalElement.appendChild(messageElement);
 
-        if (this.shouldShowOKButton || this.buttons !== null) {
+        if (this[_shouldShowOKButton] || this[_buttons] !== null) {
             let buttonsDiv = document.createElement("div");
             buttonsDiv.classList.add("message-modal-buttons");
 
-            if (this.shouldShowOKButton) {
+            if (this[_shouldShowOKButton]) {
                 const okButtonObject = {
                     title: "OK",
                     onClick: () => {
-                        if (this._containerElement !== null) {
-                            document.body.removeChild(this._containerElement)
+                        if (this[_containerElement] !== null) {
+                            document.body.removeChild(this[_containerElement])
                         }
                     }
                 };
-                if (this.buttons === null) {
-                    this.buttons = [okButtonObject]
+                if (this[_buttons] === null) {
+                    this[_buttons] = [okButtonObject]
                 } else {
-                    this.buttons.unshift(okButtonObject)
+                    this[_buttons].unshift(okButtonObject)
                 }
             }
 
-            if (this.buttons !== null) {
-                this.buttons.forEach(button => {
+            if (this[_buttons] !== null) {
+                this[_buttons].forEach(button => {
                     if (button.title && button.onClick) {
                         let newButton = document.createElement("button");
                         newButton.innerText = button.title;
@@ -53,6 +58,6 @@ export default class MessageModal {
             messageModalElement.appendChild(buttonsDiv);
         }
 
-        document.body.appendChild(this._containerElement);
+        document.body.appendChild(this[_containerElement]);
     }
 }
