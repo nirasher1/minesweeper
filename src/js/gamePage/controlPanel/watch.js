@@ -6,34 +6,38 @@ const parseNumber = number => {
     return stringNumber;
 };
 
+const _interval = Symbol("interval");
+const _totalSeconds = Symbol("totalSeconds");
+const _element = Symbol("element");
+
 export default class Watch {
     constructor() {
-        this.interval = null;
-        this.totalSeconds = 0;
-        this._element = document.createElement("span");
+        this[_interval] = null;
+        this[_totalSeconds] = 0;
+        this[_element] = document.createElement("span");
     }
 
     start() {
-        this.interval = setInterval(this.updateCounter.bind(this), 1000);
+        this[_interval] = setInterval(this.updateCounter.bind(this), 1000);
     }
 
     stop() {
-        if (this.interval !== null) {
-            clearInterval(this.interval);
+        if (this[_interval] !== null) {
+            clearInterval(this[_interval]);
         }
     }
 
     updateCounter() {
-        this.totalSeconds++;
+        this[_totalSeconds]++;
         this.render();
     }
 
     render() {
-        this._element.classList.add("watch");
-        const minutes = parseNumber(Math.round(this.totalSeconds / 60));
-        const seconds = parseNumber(Math.round(this.totalSeconds % 60));
-        this._element.innerText = `${minutes}:${seconds}`;
+        this[_element].classList.add("watch");
+        const minutes = parseNumber(Math.round(this[_totalSeconds] / 60));
+        const seconds = parseNumber(Math.round(this[_totalSeconds] % 60));
+        this[_element].innerText = `${minutes}:${seconds}`;
 
-        return this._element
+        return this[_element]
     }
 }

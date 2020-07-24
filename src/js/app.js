@@ -3,7 +3,7 @@ import { default as CONFIG } from "../data/configuration.js"
 import ConfigurationPage from "./configurationPage/configurationPage.js"
 
 const startGame = (configurationPage) => {
-    const selectedOption = configurationPage.selectedOption;
+    const selectedOption = configurationPage.selectedGameOption;
     if (selectedOption.rowsCount !== null
         && selectedOption.columnsCount !== null
         && selectedOption.minesCount !== null) {

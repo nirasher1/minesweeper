@@ -9,22 +9,13 @@ const MINE_BADGE_ID = "mine";
 const IMAGES_FOLDER_PATH = "src/images/";
 const MINE_ICON_NAME = "mine.png";
 
-const onContextMenu = (e, cell) => {
-    e.preventDefault();
-    if (cell.userMark === USER_MARK.NONE) {
-        cell.onPutFlag();
-        cell.userMark = USER_MARK.FLAG;
-        cell._element.removeEventListener("click", cell.onClick);
-    } else if (cell.userMark === USER_MARK.FLAG) {
-        cell.onDeleteFlag();
-        cell.userMark = USER_MARK.QUESTION_MARK;
-        cell._element.removeEventListener("click", cell.onClick);
-    } else {
-        cell.userMark = USER_MARK.NONE;
-        cell._element.addEventListener("click", cell.onClick);
-    }
-    cell.render();
-};
+const _element = Symbol("element");
+const _onClick = Symbol("onClick");
+const _onContextMenu = Symbol("onContextMenu");
+const _onContextMenuSignature = Symbol("onContextMenuSignature");
+const _onPutFlag = Symbol("onPutFlag");
+const _onDeleteFlag = Symbol("onDeleteFlag");
+const _iconNodeElement = Symbol("iconNodeElement");
 
 export default class Cell {
     constructor({
@@ -38,45 +29,62 @@ export default class Cell {
         this.isMine = isMine;
         this.isExposed = isExposed;
         this.minesAroundCount = minesAroundCount;
-        this.onClick = onClick;
-        this.onPutFlag = onPutFlag;
-        this.onDeleteFlag = onDeleteFlag;
-        this.onContextMenu = (e) => onContextMenu(e, this);
         this.userMark = USER_MARK.NONE;
-        this.iconNode = null;
-        this._element = document.createElement("td");
-        this._element.addEventListener("click", this.onClick);
-        this._element.addEventListener("contextmenu", this.onContextMenu);
+        this[_onClick] = onClick;
+        this[_onPutFlag] = onPutFlag;
+        this[_onDeleteFlag] = onDeleteFlag;
+        this[_iconNodeElement] = null;
+        this[_element] = document.createElement("td");
+        this[_onContextMenuSignature] = this[_onContextMenu].bind(this);
+        this[_element].addEventListener("click", this[_onClick]);
+        this[_element].addEventListener("contextmenu", this[_onContextMenuSignature]);
     }
 
     removeAllListeners() {
-        this._element.removeEventListener("click", this.onClick);
-        this._element.removeEventListener("contextmenu", this.onContextMenu)
+        this[_element].removeEventListener("click", this[_onClick]);
+        this[_element].removeEventListener("contextmenu", this[_onContextMenuSignature])
+    }
+
+    [_onContextMenu](e) {
+        e.preventDefault();
+        if (this.userMark === USER_MARK.NONE) {
+            this[_onPutFlag]();
+            this.userMark = USER_MARK.FLAG;
+            this[_element].removeEventListener("click", this[_onClick]);
+        } else if (this.userMark === USER_MARK.FLAG) {
+            this[_onDeleteFlag]();
+            this.userMark = USER_MARK.QUESTION_MARK;
+            this[_element].removeEventListener("click", this[_onClick]);
+        } else {
+            this.userMark = USER_MARK.NONE;
+            this[_element].addEventListener("click", this[_onClick]);
+        }
+        this.render();
     }
 
     markAsUserMistake() {
-        this._element.classList.add(MISTAKE_MARK);
+        this[_element].classList.add(MISTAKE_MARK);
         const xText = document.createElement("div");
         xText.innerText = "X";
-        this._element.appendChild(xText)
+        this[_element].appendChild(xText)
     }
 
     markAsBombed() {
-        this._element.classList.add(BOMBED_CLASS);
+        this[_element].classList.add(BOMBED_CLASS);
         this.render()
     }
 
     render() {
-        let element = this._element;
+        let element = this[_element];
         let badgeId;
         if (this.isExposed) {
             if (this.isMine) {
                 badgeId = MINE_BADGE_ID;
-                if (this.iconNode === null) {
-                    this.iconNode = document.createElement("img");
-                    element.appendChild(this.iconNode)
+                if (this[_iconNodeElement] === null) {
+                    this[_iconNodeElement] = document.createElement("img");
+                    element.appendChild(this[_iconNodeElement])
                 }
-                this.iconNode.src = IMAGES_FOLDER_PATH + MINE_ICON_NAME;
+                this[_iconNodeElement].src = IMAGES_FOLDER_PATH + MINE_ICON_NAME;
             } else {
                 badgeId = this.minesAroundCount;
                 element.innerText = CELL_BADGE[badgeId].text;
@@ -84,24 +92,24 @@ export default class Cell {
             element.classList.add(CELL_BADGE[badgeId].class);
             element.classList.add(EXPOSED_CLASS);
             element.classList.remove(NOT_EXPOSED_CLASS);
-            if (this.iconNode !== null && !this.isMine) {
-                element.removeChild(this.iconNode)
+            if (this[_iconNodeElement] !== null && !this.isMine) {
+                element.removeChild(this[_iconNodeElement])
             }
             this.removeAllListeners()
         } else {
             element.classList.add(NOT_EXPOSED_CLASS);
             if (this.userMark !== USER_MARK.NONE) {
-                if (this.iconNode === null) {
-                    this.iconNode = document.createElement("img");
+                if (this[_iconNodeElement] === null) {
+                    this[_iconNodeElement] = document.createElement("img");
                 }
-                this.iconNode.src = IMAGES_FOLDER_PATH + this.userMark;
+                this[_iconNodeElement].src = IMAGES_FOLDER_PATH + this.userMark;
                 if (element.querySelector("img") === null) {
-                    element.appendChild(this.iconNode)
+                    element.appendChild(this[_iconNodeElement])
                 }
             } else {
-                if (this.iconNode !== null) {
-                    element.removeChild(this.iconNode);
-                    this.iconNode = null;
+                if (this[_iconNodeElement] !== null) {
+                    element.removeChild(this[_iconNodeElement]);
+                    this[_iconNodeElement] = null;
                 }
             }
         }
